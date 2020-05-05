@@ -1,27 +1,51 @@
 README
 
-1. Download data
-- NYT: download articles-search-1990-2016.json to data/nyt/raw_data/
-- ICE: download ??? to data/ice/raw_data/
-- eu: put wikicorpus and reddit coprus to data/eu/cond_data
+* 1. Download data
+
+** Download corpora
+
+- NYT: Download articles-search-1990-2016.json to data/nyt/raw_data/
+
+- ICE: Obtain the written corpora from nine locations (Canada, East Africa, Hong Kong, India, Ireland, Jamaica, Philippines, Singapore, USA) provided by [International Corpus of English](http://ice-corpora.net/ice/index.html). Save these corpora to data/ice/raw_data/
+
+- eu: Put wikicorpus and reddit coprus to data/eu/cond_data
+
+** Download Testset
+
+- NYT: Download two testsets to data/nyt/eval/
+
+- ICE: The testset is available in data/ice/eval
 
 
-2. Preprocess
+* 2. Preprocess
+
 - NYT
+
+```bash
 python preprocess/nyt_data_util.py 
-* save time-specific corpora to data/nyt/cond_data/[2006.txt]
+```
+
+Save time-specific corpora to data/nyt/cond_data/[2006.txt]
 [note] duplicate_text not used for now
 
 - ICE
+
+```bash
 python preprocess/ice_data_util.py
-* save location-specific corpora to data/ice/cond_data/[UK.txt]
+```
+
+Save location-specific corpora to data/ice/cond_data/[UK.txt]
 [note] duplicate_text not used for now
 
+
 - Euphemism
-* directly copy domain-specific corpora to data/eu/cond_data/[wiki.txt][reddit.txt]
+
+Directly copy domain-specific corpora to data/eu/cond_data/[wiki.txt][reddit.txt]
 
 
-3. Get vocab
+* 3. Get vocab
+
+```
 python vocab_util.py 
 --cond_data_folder [?]
 --vocab_data_folder [?]

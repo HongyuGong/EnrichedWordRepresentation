@@ -47,7 +47,7 @@ def train_embedding(cooccur_folder, vocab_folder, data_type, cond_list, embed_fo
         commands += [ \
             "gcc $SOURCEDIR/EWE_temporal.c -o $BUILDDIR/EWE_temporal " + \
             "-lm -pthread -ffast-math -march=native -funroll-loops -Wno-unused-result", \
-            "$BUILDDIR/EWE_temporal -save-file data/word_or_cond_vectors " + \
+            "$BUILDDIR/EWE_temporal -save-file $SAVEDIR/word_or_cond_vectors " + \
             "-save-word-cond-file $SAVEDIR/word_and_cond_vectors  " + \
             "-save-context-file $SAVEDIR/word_or_cond_cxt_vectors " + \
             "-save-word-cond-context-file $SAVEDIR/word_and_cond_cxt_vectors " + \

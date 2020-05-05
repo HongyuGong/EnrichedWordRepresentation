@@ -22,6 +22,7 @@ class EnrichedWordEmb():
     
     def __init__(self, vocab_fn, cond_fn, sep_emb_fn, dev_emb_fn,
                  sep_emb_cxt_fn=None, dev_emb_cxt_fn=None,
+                 vocab_folder=None,
                  embed_folder=None, use_cxt_vector=False,
                  remove_mean=False, use_cond_word_vocab=False):
         self.vocab_fn = vocab_fn
@@ -34,6 +35,8 @@ class EnrichedWordEmb():
         self.sep_emb_cxt_fn = sep_emb_cxt_fn
         # deviation context embedding
         self.dev_emb_cxt_fn = dev_emb_cxt_fn
+
+        self.vocab_folder = vocab_folder
         self.embed_folder = embed_folder
         self.use_cxt_vector = use_cxt_vector
         self.remove_mean = remove_mean
@@ -43,7 +46,7 @@ class EnrichedWordEmb():
 
         # vocabulary
         self.idx2word, self.word2idx, self.word_size = self.readVocab(self.vocab_fn)
-        self.idx2cond, self.cond2idx, self.cond_size = self.readVocab(self.cond_vocab_fn)
+        self.idx2cond, self.cond2idx, self.cond_size = self.readVocab(self.cond_fn)
 
         # embedding
         self.word_embed, self.cond_embed = self.readSepEmbed(self.sep_emb_fn)
@@ -56,7 +59,12 @@ class EnrichedWordEmb():
         word2idx = {}
         with open(vocab_fn, "r") as fin:
             for line in fin:
-                word, freq = line.strip().split()
+                if line.strip() == "":
+                    continue
+                if len(line.strip().split()) == 1:
+                    word = line.strip()
+                else:
+                    word, freq = line.strip().split()
                 word2idx[word] = len(idx2word)
                 idx2word.append(word)
         return idx2word, word2idx, len(idx2word)
@@ -74,9 +82,11 @@ class EnrichedWordEmb():
         cond_embed = []
         cond_list = []
         with open(sep_emb_fn, "r") as fin:
+            # skip header
+            fin.readline()
             # read word embedding
-            word_cnt = 0
-            for line in f:
+            word_count = 0
+            for line in fin:
                 word, vec = self._parse_line(line)
                 word_embed.append(copy.deepcopy(vec))
                 word_count += 1
@@ -84,7 +94,7 @@ class EnrichedWordEmb():
                     break
             # read condition embedding
             cond_cnt = 0
-            for line in f:
+            for line in fin:
                 cond, vec = self._parse_line(line)
                 cond_list.append(cond)
                 cond_embed.append(copy.deepcopy(vec))
@@ -107,14 +117,19 @@ class EnrichedWordEmb():
         else:
             word_embed, cond_embed = self.word_embed, self.cond_embed
             dev_emb_fn = self.dev_emb_fn
-            
+
+        words = []
         dev_embed = []
+        count = 0
         with open(dev_emb_fn, "r") as fin:
             for line in fin:
                 if count >= cond_idx and (count-cond_idx) % self.cond_size == 0:
                     word, vec = self._parse_line(line)
                     dev_embed.append(copy.deepcopy(vec))
-        assert len(dev_embed) == self.vocab_size
+                count += 1
+        assert len(dev_embed) == self.word_size
+        #dev_embed = dev_embed[:self.word_size]
+        #print("Extra lines: {} in deviation vectors".format(words[self.word_size:]))
 
         cond_vec = cond_embed[cond_idx]
         enriched_embed = np.multiply(word_embed, cond_vec) + dev_embed
@@ -130,19 +145,19 @@ class EnrichedWordEmb():
             enriched_embed_cxt = self.synEmbed(cond, is_cxt_vector=True)
             enriched_embed = 0.5 * (enriched_embed + enriched_embed_cxt)
         if self.remove_mean:
-            mean_vec = np.mean(enriced_embed, axis=0)
+            mean_vec = np.mean(enriched_embed, axis=0)
             enriched_embed = enriched_embed - mean_vec
-        save_fn = os,path.join(self.embed_folder, "enriched_"+str(cond)+".txt")
+        save_fn = os.path.join(self.embed_folder, "enriched_"+str(cond)+".txt")
         
         # Only use words occurring in the given condition
         if self.use_cond_word_vocab:
             print("Using conditional word vocabulary...")
-            cond_word_vocab_fn = os.path.join(vocab_folder, str(cond)+".txt")
-            _, cond_idx2word, _ = self.readVocab(cond_word_vocab_fn)
+            cond_word_vocab_fn = os.path.join(self.vocab_folder, str(cond)+".txt")
+            _, cond_word2idx, _ = self.readVocab(cond_word_vocab_fn)
 
             cond_words = []
             cond_vecs = []
-            for (word, vec) in zip(idx2word, enriched_embed):
+            for (word, vec) in zip(self.idx2word, enriched_embed):
                 if word in cond_word2idx:
                     cond_words.append(word)
                     cond_vecs.append(copy.deepcopy(vec))
@@ -154,7 +169,7 @@ class EnrichedWordEmb():
 
     def saveEmbed(self, words, vecs, save_fn):
         with open(save_fn, "w") as fout:
-            fout.write(str(len(words)) + " " + str(len(vec[0])) + "\n")
+            fout.write(str(len(words)) + " " + str(len(vecs[0])) + "\n")
             for (word, vec) in zip(words, vecs):
                 fout.write(" ".join([word] + [str(val) for val in vec]) + "\n")
         

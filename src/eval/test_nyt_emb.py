@@ -19,7 +19,7 @@ from params import *
 
 
 if not os.path.isdir(nyt_eval_res_folder):
-    os.path.makedirs(nyt_eval_res_folder)
+    os.makedirs(nyt_eval_res_folder)
 
 def saveTemporalEmb(model):
     for time in time_list:
@@ -59,7 +59,7 @@ if __name__=="__main__":
     parser.add_argument("--end_ind", type=int, default=100)
     
     # enriched embedding model
-    parser.add_argumnet("--use_cxt_vector", default=False, action="store_true")
+    parser.add_argument("--use_cxt_vector", default=False, action="store_true")
     parser.add_argument("--remove_mean", default=True, action="store_true")
     parser.add_argument("--use_cond_word_vocab", default=False, action="store_true")
 
@@ -74,10 +74,11 @@ if __name__=="__main__":
 
     model = EnrichedWordEmb(vocab_fn=os.path.join(nyt_vocab_data_folder, "vocab.txt"),
                             cond_fn=os.path.join(nyt_vocab_data_folder, "cond_vocab.txt"),
-                            sep_emb_fn=os.path.join(nyt_embed_folder, sep_emb_prefix),
-                            dev_emb_fn=os.path.join(nyt_embed_folder, dev_emb_prefix),
-                            sep_emb_cxt_fn=os.path.join(nyt_embed_folder, sep_emb_cxt_prefix),
-                            dev_emb_cxt_fn=os.path.join(nyt_embed_folder, dev_emb_cxt_prefix),
+                            sep_emb_fn=os.path.join(nyt_embed_folder, sep_emb_prefix+".txt"),
+                            dev_emb_fn=os.path.join(nyt_embed_folder, dev_emb_prefix+".txt"),
+                            sep_emb_cxt_fn=os.path.join(nyt_embed_folder, sep_emb_cxt_prefix+".txt"),
+                            dev_emb_cxt_fn=os.path.join(nyt_embed_folder, dev_emb_cxt_prefix+".txt"),
+                            vocab_folder=nyt_vocab_data_folder,
                             embed_folder=nyt_embed_folder,
                             use_cxt_vector=use_cxt_vector,
                             remove_mean=remove_mean,
