@@ -12,10 +12,8 @@ import numpy as np
 from gensim.models import KeyedVectors
 from collections import defaultdict
 from eval_data_util import readQueryWords
-sys.path.append("../")
-from params import *
-sys.path.append("../train/")
-from enriched_word_emb import EnrichedWordEmb
+from config.params import *
+from train.enriched_word_emb import EnrichedWordEmb
 
 
 if not os.path.isdir(eu_eval_res_folder):

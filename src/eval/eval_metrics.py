@@ -20,8 +20,8 @@ def evalMRR(query_target_gold, query_target_algo):
             continue
         for gold_neighbor in gold_neighbor_list:
             sum_count += 1
-            gold_year = int(gold_neighbor.split("-")[-1])
-            target_neighbors = query_target_algo[query_word][gold_year]
+            gold_cond = gold_neighbor.split("-")[-1]
+            target_neighbors = query_target_algo[query_word][gold_cond]
             if (gold_neighbor not in target_neighbors):
                 continue
             rank = target_neighbors.index(gold_neighbor) + 1
@@ -45,8 +45,8 @@ def evalMP(query_target_gold, query_target_algo, topk):
             continue
         for gold_neighbor in gold_neighbor_list:
             sum_count += 1
-            gold_year = int(gold_neighbor.split("-")[-1])
-            target_neighbors = query_target_algo[query_word][gold_year][:topk]
+            gold_cond = gold_neighbor.split("-")[-1]
+            target_neighbors = query_target_algo[query_word][gold_cond][:topk]
             if (gold_neighbor in target_neighbors):
                 sum_prec += 1.0
     mp = float(sum_prec) / sum_count

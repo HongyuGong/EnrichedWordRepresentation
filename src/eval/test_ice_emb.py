@@ -11,10 +11,8 @@ import numpy as np
 from gensim.models import KeyedVectors
 from collections import defaultdict
 from eval_data_util import readQueryWords
-sys.path.append("../")
-from params import *
-sys.path.append("../train/")
-from enriched_word_emb import EnrichedWordEmb
+from config.params import *
+from train.enriched_word_emb import EnrichedWordEmb
 
 
 if not os.path.isdir(ice_eval_res_folder):
@@ -26,7 +24,7 @@ def saveSpatialEmb(model):
         model.genEnrichedEmbed(region)
 
 
-def findSpatialNeighbors(model, src_words, topn=20):
+def findSpatialNeighbors(model, src_words, topn=10):
     """
     @return spatial_nebs: {"washington-usa": {"jamaica": [("place-jamaica", 0.6)]}}
     """
@@ -39,7 +37,7 @@ def findSpatialNeighbors(model, src_words, topn=20):
         spatial_nebs[src_word] = defaultdict(dict)
         word, src_cond = src_word.strip().split("-")
         for trg_cond in region_list:
-            if trg_cond == trg_cond:
+            if trg_cond == src_cond:
                 continue
             neb_dict = model.findInterNeighbors([word], src_cond, trg_cond, topn)
             nebs = neb_dict[word]

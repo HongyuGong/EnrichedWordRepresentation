@@ -22,7 +22,7 @@ README
 - NYT
 
 ```bash
-python preprocess/nyt_data_util.py 
+python -m preprocess.nyt_data_util
 ```
 
 Save time-specific corpora to data/nyt/cond_data/[2006.txt]
@@ -31,7 +31,7 @@ Save time-specific corpora to data/nyt/cond_data/[2006.txt]
 - ICE
 
 ```bash
-python preprocess/ice_data_util.py
+python -m preprocess.ice_data_util
 ```
 
 Save location-specific corpora to data/ice/cond_data/[UK.txt]
@@ -46,7 +46,7 @@ Directly copy domain-specific corpora to data/eu/cond_data/[wiki.txt][reddit.txt
 # 3. Get vocab
 
 ```bash
-python vocab_util.py 
+python -m preprocess.vocab_util 
 --cond_data_folder [?]
 --vocab_data_folder [?]
 --data_type [nyt/ice/eu]
@@ -59,7 +59,7 @@ python vocab_util.py
 # 4. Count co-occurrences
 
 ```bash
-python cooccur_util.py 
+python -m preprocess.cooccur_util
 --cond_data_folder [?]
 --vocab_data_folder [?]
 --cooccur_folder [?]
@@ -73,7 +73,7 @@ python cooccur_util.py
 # 5. Learn embedding
 
 ```bash
-python train.py
+python -m train.train
 --cooccur_folder [?]
 --vocab_folder [?]
 --data_type [nyt/ice/eu]
@@ -93,17 +93,27 @@ python train.py
 # 6. post-process enriched embedding
 
 ```bash
-python test_[nyt/ice/eu]_emb.py
+python -m eval.test_nyt_emb --use_cxt_vector --remove_mean --use_cond_word_vocab
+
+python -m eval.test_ice_emb --remove_mean
 ```
 
-* save embedding to data/nyt/embed/enriched_[2006].txt
+* Paramters for post-processing
 
-* save embedding to data/ice/embed/enriched_[usa].txt
+--use_cxt_vector: whether to use context word embeddings
+
+--remove_mean: remove mean vector from the set of embeddings in each condition
+
+--use_cond_word_vocab: only generate embeddings for words occurring in the corpus of a given corpus
+
+* save temporal embedding to data/nyt/embed/enriched_[2006].txt
+
+* save spatial embedding to data/ice/embed/enriched_[usa].txt
 
 # 7. test enriched embedding
 
 ```bash
-python test_nyt_emb.py 
+python -m eval.test_nyt_emb
 --dataset [1/2] 
 --test 
 --start_ind 0
@@ -116,7 +126,7 @@ python test_nyt_emb.py
 * save predictions to data/nyt/eval/result/
 
 ```bash
-python test_ice_emb.py
+python -m eval.test_ice_emb
 --test
 --start_ind 0
 --end_ind 100
@@ -128,7 +138,7 @@ python test_ice_emb.py
 * save predictions to data/ice/eval/result
 
 ```bash
-python test_eu_emb.py
+python -m eval.test_eu_emb
 --test
 --use_cxt_vector[?]
 --remove_mean[?]
@@ -140,7 +150,7 @@ python test_eu_emb.py
 * On NYT testsets
 
 ```bash
-python eval_emb.py 
+python -m eval.eval_emb
 --test_fn ../data/nyt/eval/Testset/testset_[1/2].csv
 --res_folder ../data/nyt/eval/result/
 ```
@@ -148,7 +158,7 @@ python eval_emb.py
 * On ICE testset
 
 ```bash
-python eval_emb.py 
+python -m eval.eval_emb
 --test_fn ../data/ice/eval/ice_equivalents.txt
 --res_folder ../data/ice/eval/result/
 ```

@@ -8,8 +8,7 @@ import pickle
 import argparse
 import sys
 from collections import Counter
-sys.path.append("../")
-from params import *
+from config.params import *
 
 
 def genWordVocab(vocab_data_folder, cond_list, global_word_ft):

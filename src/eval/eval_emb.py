@@ -5,6 +5,7 @@ eval_emb.py
 
 import os
 import sys
+import argparse
 import pickle
 import copy
 from eval_data_util import readQueryWords
@@ -27,6 +28,7 @@ def evalEmbAlignment(test_fn, res_folder):
         query_target_pred[query_word] = copy.deepcopy(clean_word_dict)
     print("# of GOLD query words: {}, # of PRED query words: {}".format(
         len(query_target_gold), len(query_target_pred)))
+
 
     # eval MRR
     evalMRR(query_target_gold, query_target_pred)

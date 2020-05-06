@@ -8,8 +8,7 @@ import os
 import argparse
 import re
 import sys
-sys.path.append("../")
-from params import *
+from config.params import *
 
 # create directories
 for folder in [eu_folder, eu_raw_data_folder, eu_cond_data_folder, \

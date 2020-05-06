@@ -3,18 +3,12 @@ import os
 import argparse
 import re
 import sys
-sys.path.append("../")
-from params import *
+from config.params import *
 
 # create directories
 for folder in [ice_folder, ice_raw_data_folder, ice_cond_data_folder, ice_vocab_data_folder]:
     if not os.path.isdir(folder):
         os.makedirs(folder)
-
-#ice_corpus_folder = "/projects/csl/viswanath/data/hgong6/DynamicEmbedding/Data_ICE/"
-#save_folder = "/projects/csl/viswanath/data/hgong6/DynamicEmbedding/ICE_region_slice/orig/"
-#dup_save_folder = "/projects/csl/viswanath/data/hgong6/DynamicEmbedding/ICE_region_slice/duplicate/"
-
 
  
 def tokenizeText(string):
@@ -107,7 +101,7 @@ def readJamaicaCorpus():
     folder = os.path.join(ice_raw_data_folder, "ICE-JA/CORPUS/")
     save_fn = os.path.join(ice_cond_data_folder, "jamaica.txt")
     for text_fn in os.listdir(folder):
-        cleanText(ps.path.join(folder, text_fn), save_fn)
+        cleanText(os.path.join(folder, text_fn), save_fn)
     print("done processing Jamaica Corpus...")
 
 

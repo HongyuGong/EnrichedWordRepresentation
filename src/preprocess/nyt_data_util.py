@@ -2,17 +2,12 @@ import json
 import re
 import os
 import sys
-sys.path.append("../")
-from params import *
+from config.params import *
 
 # create directories
 for folder in [nyt_folder, nyt_raw_data_folder, nyt_cond_data_folder, nyt_vocab_data_folder]:
   if not os.path.isdir(folder):
     os.makedirs(folder)
-
-
-#orig_year_slice_folder = "../NYT_year_slice/orig/"
-#duplicate_year_slice_folder = "../NYT_year_slice/duplicate/"
 
 
 def cleanText(string):

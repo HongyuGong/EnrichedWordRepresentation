@@ -6,8 +6,7 @@ train_util.py
 import os
 import sys
 import argparse
-sys.path.append("../")
-from params import *
+from config.params import *
 
 
 def train_embedding(cooccur_folder, vocab_folder, data_type, cond_list, embed_folder,

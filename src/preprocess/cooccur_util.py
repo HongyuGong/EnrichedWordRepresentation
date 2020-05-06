@@ -8,8 +8,7 @@ import os
 import numpy as np
 import argparse
 import sys
-sys.path.append("../")
-from params import *
+from config.params import *
 
 
 def calcScale(cond_data_folder, cond_list):

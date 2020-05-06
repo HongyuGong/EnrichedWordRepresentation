@@ -12,10 +12,8 @@ import numpy as np
 import csv
 from gensim.models import KeyedVectors
 from eval_data_util import readQueryWords
-sys.path.append("../train/")
-from enriched_word_emb import EnrichedWordEmb
-sys.path.append("../")
-from params import *
+from train.enriched_word_emb import EnrichedWordEmb
+from config.params import *
 
 
 if not os.path.isdir(nyt_eval_res_folder):
@@ -27,7 +25,7 @@ def saveTemporalEmb(model):
         print("Finish enriched embedding for year: {}".format(time))
 
 
-def findTemporalNeighbors(model, src_words, topn=20):
+def findTemporalNeighbors(model, src_words, topn=10):
     for src_word in src_words:
         res_fn = os.path.join(nyt_eval_res_folder, src_word+".pkl")
         if os.path.isfile(res_fn):
