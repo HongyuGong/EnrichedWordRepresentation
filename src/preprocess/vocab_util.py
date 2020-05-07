@@ -82,6 +82,9 @@ if __name__=="__main__":
     else:
         print("Error: unknown data_type {}".format(args.data_type))
 
+    if not os.path.isdir(args.vocab_data_folder):
+        os.makedirs(args.vocab_data_folder)
+
     genCondVocab(args.vocab_data_folder, cond_list)
     
     genConditionalVocab(args.cond_data_folder,

@@ -22,7 +22,8 @@ res_prefix = "result"
 
 # ---------------- nyt data (temporal) ----------------
 nyt_folder = os.path.join(data_folder, "nyt")
-nyt_corpus = "articles-search-1990-2016.json"
+nyt_paragraphs = "paragraphs-1990-2016.json"
+nyt_articles = "articles-search-1990-2016.json"
 nyt_raw_data_folder = os.path.join(nyt_folder, raw_prefix)
 nyt_cond_data_folder = os.path.join(nyt_folder, cond_prefix)
 nyt_vocab_data_folder = os.path.join(nyt_folder, vocab_prefix)
@@ -30,7 +31,7 @@ nyt_cooccur_folder = os.path.join(nyt_folder, cooccur_prefix)
 nyt_embed_folder = os.path.join(nyt_folder, embed_prefix)
 nyt_eval_data_folder = os.path.join(nyt_folder, eval_prefix)
 nyt_eval_res_folder = os.path.join(nyt_eval_data_folder, res_prefix)
-time_list = range(1990, 2017)
+time_list = [str(year) for year in range(1990, 2017)]
 # frequentcy threshold 
 nyt_word_ft = 1
 global_nyt_word_ft = 100

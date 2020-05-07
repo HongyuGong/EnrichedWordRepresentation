@@ -22,7 +22,7 @@ def calcScale(cond_data_folder, cond_list):
     return scale_list
 
 def countCooccur(cond_data_folder, vocab_data_folder, cooccur_folder,
-                 cond_list=[], word_ft=5, window_size=5):
+                 cond_list=[], window_size=5):
     scale_list = calcScale(cond_data_folder, cond_list)
     vocab_fn = os.path.join(vocab_data_folder, "vocab.txt")
     cooccur_fn = os.path.join(cooccur_folder, "cooccur.bin")
@@ -77,8 +77,6 @@ if __name__=="__main__":
     parser.add_argument("--vocab_data_folder", required=True, default=None, type=str)
     parser.add_argument("--cooccur_folder", required=True, default=None, type=str)
     parser.add_argument("--data_type", required=True, default=None, type=str)
-    parser.add_argument("--word_ft", default=5, type=int,
-                        help="word frequency threhold")
     parser.add_argument("--window_size", default=5, type=int)
     args = parser.parse_args()
 
@@ -98,7 +96,6 @@ if __name__=="__main__":
                  args.vocab_data_folder,
                  args.cooccur_folder,
                  cond_list,
-                 args.word_ft,
                  args.window_size)
 
     shufCooccur(args.cooccur_folder)

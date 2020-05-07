@@ -16,18 +16,15 @@ from train.enriched_word_emb import EnrichedWordEmb
 from config.params import *
 
 
-if not os.path.isdir(nyt_eval_res_folder):
-    os.makedirs(nyt_eval_res_folder)
-
 def saveTemporalEmb(model):
     for time in time_list:
         model.genEnrichedEmbed(time)
         print("Finish enriched embedding for year: {}".format(time))
 
 
-def findTemporalNeighbors(model, src_words, topn=10):
+def findTemporalNeighbors(model, src_words, topn=10, res_folder=None):
     for src_word in src_words:
-        res_fn = os.path.join(nyt_eval_res_folder, src_word+".pkl")
+        res_fn = os.path.join(res_folder, src_word+".pkl")
         if os.path.isfile(res_fn):
             print("{}.pkl exsits: skip it".format(src_word))
             continue
@@ -87,8 +84,9 @@ if __name__=="__main__":
         test_fn = os.path.join(nyt_eval_data_folder, "Testset", "testset_"+str(dataset)+".csv")
         res_folder = os.path.join(nyt_eval_res_folder, "testset_"+str(dataset))
         if not os.path.isdir(res_folder):
-            os.path.makedirs(res_folder)
+            os.makedirs(res_folder)
         query_words, _ = readQueryWords(test_fn)
-        findTemporalNeighbors(model, query_words[start_ind:end_ind], topn=20)
+        findTemporalNeighbors(model, query_words[start_ind:end_ind],
+                              topn=20, res_folder=res_folder)
             
         

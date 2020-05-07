@@ -25,7 +25,7 @@ README
 python -m preprocess.nyt_data_util
 ```
 
-Save time-specific corpora to data/nyt/cond_data/[2006.txt]
+Save time-specific corpora to data/nyt/cond_data/[2006].txt
 [note] duplicate_text not used for now
 
 - ICE
@@ -34,7 +34,7 @@ Save time-specific corpora to data/nyt/cond_data/[2006.txt]
 python -m preprocess.ice_data_util
 ```
 
-Save location-specific corpora to data/ice/cond_data/[UK.txt]
+Save location-specific corpora to data/ice/cond_data/[uk].txt
 [note] duplicate_text not used for now
 
 
@@ -47,13 +47,22 @@ Directly copy domain-specific corpora to data/eu/cond_data/[wiki.txt][reddit.txt
 
 ```bash
 python -m preprocess.vocab_util 
---cond_data_folder [?]
---vocab_data_folder [?]
---data_type [nyt/ice/eu]
---word_ft [?]
+--cond_data_folder COND_DATA_FOLDER
+--vocab_data_folder VOCAB_DATA_FOLDER
+--data_type DATA_TYPE
+--word_ft WORD_FT
+--global_word_ft GLOBAL_WORD_FT
 ```
 
-* save vocab to data/[nyt]/vocab/[2006.txt]
+* COND_DATA_FOLDER: the folder to save corpora for each condition
+
+* VOCAB_DATA_FOLDER: the folder to save vocabulary
+
+* DATA_TYPE: nyt or ice or eu
+
+* WORD_FT: conditional word frequency threshold, word with frequency higher than the threshold are included in the vocabulary in each condition
+
+* GLOBAL_WORD_FT: global word frequency threshold, word with frequency higher than the threshold are included in the joint vocabulary 
 
 
 # 4. Count co-occurrences
@@ -64,7 +73,6 @@ python -m preprocess.cooccur_util
 --vocab_data_folder [?]
 --cooccur_folder [?]
 --data_type [nyt/ice/eu]
---word_ft [?]
 --window_size [?]
 ```
 
@@ -98,7 +106,7 @@ python -m eval.test_nyt_emb --use_cxt_vector --remove_mean --use_cond_word_vocab
 python -m eval.test_ice_emb --remove_mean
 ```
 
-* Paramters for post-processing
+* Paramters for post-processing, one can try with or without the following choices. 
 
 --use_cxt_vector: whether to use context word embeddings
 

@@ -38,22 +38,28 @@ def cleanText(string):
   return string.strip().lower()
     
 
-def readUrlYear(fn=os.path.join(nyt_raw_data_folder, nyt_corpus)):
+def readUrlYear(fn=os.path.join(nyt_raw_data_folder, nyt_articles)):
+  print("Read {}...".format(fn))
   url_year_dict = dict()
   with open(fn, "r") as handle:
     json_data = json.load(handle)
   for text_obj in json_data:
     url = text_obj["url"]
-    date = text_obj["date"]
-    year = date.split("-")[0]
+    try:
+      date = text_obj["date"]
+      year = date.split("-")[0]
+    except:
+      print("No date:{}".format(text_obj))
+      continue
     url_year_dict[url] = year
   return url_year_dict
 
 
-def readText(fn=os.path.join(nyt_raw_data_folder, nyt_corpus)):
+def readText(fn=os.path.join(nyt_raw_data_folder, nyt_paragraphs)):
   # url_year_dict
-  url_year_dict = readUrlYear(fn)
+  url_year_dict = readUrlYear()
   # paragraphs
+  print("Read {}".format(fn))
   year_text_dict = dict()
   with open(fn, "r") as handle:
       json_data = json.load(handle)
