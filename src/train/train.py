@@ -29,7 +29,7 @@ def train_embedding(cooccur_folder, vocab_folder, data_type, cond_list, embed_fo
             "-save-context-file $SAVEDIR/word_or_cond_cxt_vectors " + \
             "-save-word-cond-context-file $SAVEDIR/word_and_cond_cxt_vectors " + \
             "-threads 20 -input-file $COOCCURRENCE_SHUF_FILE " + \
-            "-alpha 0.75 -x-max 500 -iter $EPOCH -vector-size $DIM -binary 0 " + \
+            "-alpha 0.75 -x-max 6 -iter $EPOCH -vector-size $DIM -binary 0 " + \
             "-vocab-file $VOCAB_FILE -verbose 2 -model 3 -cond $COND_SIZE"]
     elif data_type == "ice":
         commands += [ \

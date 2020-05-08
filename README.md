@@ -69,26 +69,51 @@ python -m preprocess.vocab_util
 
 ```bash
 python -m preprocess.cooccur_util
---cond_data_folder [?]
---vocab_data_folder [?]
---cooccur_folder [?]
---data_type [nyt/ice/eu]
---window_size [?]
+--cond_data_folder COND_DATA_FOLDER
+--vocab_data_folder VOCAB_DATA_FOLDER
+--cooccur_folder COOCCUR_FOLDER
+--data_type DATA_TYPE
+--window_size WINDOW_SIZE
 ```
 
-* save to data/[nyt]/cooccur/[nyt_2006.bin]
+* COND_DATA_FOLDER: the folder to save preprocessed conditional corpora
+
+* VOCAB_DATA_FOLDER: the folder to save vocabulary
+
+* COOCCUR_FOLDER: the folder to save cooccurrence data
+
+* DATA_TYPE: nyt or ice or eu
+
+* EMBED_FOLDER: the folder to save trained embeddings
+
+* EPOCH: 80 for nyt and 40 for ice
+
+* WINDOW_SIZE: the window size to count co-occurring words, e.g., 5 as window size
+
+* co-occurrence file is saved to COOCCUR_FOLDER/
 
 # 5. Learn embedding
 
 ```bash
 python -m train.train
---cooccur_folder [?]
---vocab_folder [?]
---data_type [nyt/ice/eu]
---embed_folder [?]
+--cooccur_folder COOCCUR_FOLDER
+--vocab_folder VOCAB_FOLDER
+--data_type DATA_TYPE
+--embed_folder EMBED_FOLDER
 --emb_dim 50
---epoch 40
+--epoch EPOCH
 ```
+
+* COOCCUR_FOLDER: the folder to save cooccurrence data
+
+* VOCAB_FOLDER: the folder to save vocabulary
+
+* DATA_TYPE: nyt or ice or eu
+
+* EMBED_FOLDER: the folder to save trained embeddings
+
+* EPOCH: 80 for nyt and 40 for ice
+
 
 * temporal embedding: ewe_temporal.c [ref: glove_region.c]
 
@@ -101,9 +126,9 @@ python -m train.train
 # 6. post-process enriched embedding
 
 ```bash
-python -m eval.test_nyt_emb --use_cxt_vector --remove_mean --use_cond_word_vocab
+python -m eval.test_nyt_emb --remove_mean --use_cond_word_vocab
 
-python -m eval.test_ice_emb --remove_mean
+python -m eval.test_ice_emb --use_cond_word_vocab
 ```
 
 * Paramters for post-processing, one can try with or without the following choices. 
@@ -122,25 +147,20 @@ python -m eval.test_ice_emb --remove_mean
 
 ```bash
 python -m eval.test_nyt_emb
---dataset [1/2] 
+--dataset DATASET
 --test 
---start_ind 0
---end_ind 20
---use_cxt_vector
 --remove_mean
 --use_cond_word_vocab
 ```
+
+* DATASET: either 1 or 2 which refers to testset_1 or testset_2 in NYT Testset.
 
 * save predictions to data/nyt/eval/result/
 
 ```bash
 python -m eval.test_ice_emb
 --test
---start_ind 0
---end_ind 100
---use_cxt_vector[?]
---remove_mean[?]
---use_cond_word_vocab[?]
+--use_cond_word_vocab
 ```
 
 * save predictions to data/ice/eval/result
@@ -159,8 +179,8 @@ python -m eval.test_eu_emb
 
 ```bash
 python -m eval.eval_emb
---test_fn ../data/nyt/eval/Testset/testset_[1/2].csv
---res_folder ../data/nyt/eval/result/
+--test_fn EVAL_FOLDER/Testset/testset_[1/2].csv
+--res_folder EVAL_FOLDER/result/
 ```
 
 * On ICE testset
